@@ -25,6 +25,9 @@
         <module name="socialnetwork" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="socialnetwork" target="1.6" />
+    </bytecodeTargetLevel>
   </component>
 </project>
 

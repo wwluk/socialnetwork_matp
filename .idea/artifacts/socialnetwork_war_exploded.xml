@@ -1,0 +1,28 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="socialnetwork:war exploded">
+    <output-path>$PROJECT_DIR$/target/socialnetwork-1.0-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="socialnetwork/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="socialnetwork" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.15" />
+          <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.0" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
