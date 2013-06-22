@@ -13,22 +13,76 @@
     <spring:url value="/resources/scripts/graph/dracula_graffle.js" var="dracula_graffle_url" />
     <spring:url value="/resources/scripts/graph/dracula_algorithms.js" var="dracula_algo_url" />
     <spring:url value="/resources/styles/bootstrap/css/bootstrap.min.css" var="bootstrap_url" />
+    <spring:url value="/resources/scripts/bootstrap.min.js" var="bootstrap_js_url" />
+    <spring:url value="/resources/scripts/jquery.validate.min.js" var="jquery_validate_url" />
+    <spring:url value="/resources/scripts/custom.js" var="custom_url" />
+    <spring:url value="/resources/styles/bootstrap/jquery-ui.css" var="jquery_css_url" />
+
+    <spring:url value="/home/search" var="searchUrl" />
 
     <head>
-        <script type="text/javascript" src="${jquery_url}"/>
-        <script type="text/javascript" src="${jquery_ui_url}"/>
-        <script type="text/javascript" src="${raphael_url}"/>
-        <script type="text/javascript" src="${dracula_graph_url}"/>
-        <script type="text/javascript" src="${dracula_graffle_url}"/>
-        <script type="text/javascript" src="${dracula_algo_url}"/>
-        <link rel="stylesheet" media="all" href="${bootstrap_url}" />
+        <link rel="stylesheet" media="screen" href="${bootstrap_url}" />
+        <link rel="stylesheet" media="screen" href="${jquery_css_url}" />
+
+        <script type="text/javascript" src="${jquery_url} " ><jsp:text/></script>
+        <!--<script type="text/javascript" src="${bootstrap_js_url}" ><jsp:text/></script>-->
+        <!--<script type="text/javascript" src="${jquery_ui_url}" ><jsp:text/></script>-->
+        <script type="text/javascript" src="${raphael_url}" ><jsp:text/></script>
+        <script type="text/javascript" src="${dracula_graph_url}" ><jsp:text/></script>
+        <script type="text/javascript" src="${dracula_graffle_url}" ><jsp:text/></script>
+        <script type="text/javascript" src="${dracula_algo_url}" ><jsp:text/></script>
+        <script type="text/javascript" src="${jquery_validate_url}" ><jsp:text/></script>
+
+        <script type="text/javascript">
+            $(function(){
+
+                $('form#search-form').submit(function(){
+                    var searchUrl = '${searchUrl}?search_val='+$('#search_val').val();
+                    $.getJSON(searchUrl,function(data){
+
+                    });
+                    return false;
+                });
+
+                $('form#search-form').validate({
+                    rules : {
+                        search_val : {
+                            required : true
+                        }
+                    }
+
+                });
+            });
+        </script>
 
     </head>
+
     <body>
         <div class="container">
-            <h1>
-                JESTEM TU !!!!!
-            </h1>
+            <div class="row">
+                <div class="hero-unit">
+                    <h2 class="text-center">Naukowcy - Sieć Powiązań</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span5 offset5 well">
+
+                    <form id="search-form" class="form-inline">
+                        <div class="input-append">
+                            <input name="search_val" id = "search_val" type="text" class="input-large" placeholder="Imie Nazwisko"/>
+                            <button type="submit" class="btn btn-info">
+                                <i class="icon-search" />
+                                Szukaj
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div id="graph-canvas">
+
+                </div>
+            </div>
         </div>
     </body>
 </html>
