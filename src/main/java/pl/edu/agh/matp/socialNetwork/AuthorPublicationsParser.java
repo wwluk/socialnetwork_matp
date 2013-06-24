@@ -16,7 +16,7 @@ import java.util.List;
  * Date: 11.06.13
  * Time: 00:37
  */
-class AuthorPublicationsParser {
+public class AuthorPublicationsParser {
     public List<String> parse(URL url) {
 
         SAXBuilder builder = new SAXBuilder();

@@ -17,6 +17,7 @@
     <spring:url value="/resources/scripts/jquery.validate.min.js" var="jquery_validate_url" />
     <spring:url value="/resources/scripts/custom.js" var="custom_url" />
     <spring:url value="/resources/styles/bootstrap/jquery-ui.css" var="jquery_css_url" />
+    <spring:url value="/resources/scripts/graph/sigma.js" var="sigma_url" />
 
     <spring:url value="/home/search" var="searchUrl" />
 
@@ -32,6 +33,7 @@
         <script type="text/javascript" src="${dracula_graffle_url}" ><jsp:text/></script>
         <script type="text/javascript" src="${dracula_algo_url}" ><jsp:text/></script>
         <script type="text/javascript" src="${jquery_validate_url}" ><jsp:text/></script>
+        <script type="text/javascript" src="${sigma_url}"><jsp:text/></script>
 
         <script type="text/javascript">
             $(function(){
@@ -39,7 +41,8 @@
                 $('form#search-form').submit(function(){
                     var searchUrl = '${searchUrl}?search_val='+$('#search_val').val();
                     $.getJSON(searchUrl,function(data){
-
+                        console.log(data);
+                        drawGraph(data);
                     });
                     return false;
                 });
@@ -52,7 +55,39 @@
                     }
 
                 });
+
+                drawTest();
             });
+
+            function drawGraph(data){
+                var g = new Graph();
+                g.addNode(data.scientist);
+                $.each(data.collaborators,function(indx,col){
+                    g.addNode(col.collaborator);
+                    $.each(col.publications,function(indx,pub){
+                        g.addEdge(col.collaborator,data.scientist);
+                    });
+                });
+
+                var layouter = new Graph.Layout.Spring(g);
+                layouter.layout();
+
+                var renderer = new Graph.Renderer.Raphael('graph-canvas', g, 800, 600);
+                renderer.draw();
+            }
+
+            function drawTest(){
+                var sigRoot = document.getElementById('test-canvas');
+                var sigInst = sigma.init(sigRoot);
+                sigInst.addNode('hello',{
+                    label: 'Hello',
+                    color: '#ff0000'
+                }).addNode('world',{
+                            label: 'World !',
+                            color: '#00ff00'
+                        }).addEdge('hello_world','hello','world').draw();
+
+            }
         </script>
 
     </head>
@@ -80,6 +115,11 @@
             </div>
             <div class="row">
                 <div id="graph-canvas">
+
+                </div>
+            </div>
+            <div class="row">
+                <div id="test-canvas">
 
                 </div>
             </div>

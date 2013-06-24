@@ -5,8 +5,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.edu.agh.matp.socialNetwork.AuthorPublicationsParser;
+import pl.edu.agh.matp.socialNetwork.Publication;
+import pl.edu.agh.matp.socialNetwork.PublicationParser;
+import pl.edu.agh.matp.utils.AuthorPublicationsEntry;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +29,11 @@ import java.util.List;
 @RequestMapping(value = "/home")
 public class HomeController {
 
+    final String personServiceUrl = "http://dblp.uni-trier.de/pers/xk/";
+    final String publicationServiceUrl = "http://dblp.uni-trier.de/rec/bibtex/";
+    private AuthorPublicationsParser authorPublicationsParser = new AuthorPublicationsParser();
+    private PublicationParser publicationParser = new PublicationParser();
+
     @RequestMapping(method = RequestMethod.GET)
     public String home(){
         return "home";
@@ -27,8 +41,44 @@ public class HomeController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<String> search(@RequestParam("search_val")String searchVal){
+    public AuthorPublicationsList search(@RequestParam("search_val")String searchVal){
+        return prepareResult(searchVal);
+    }
+
+    private AuthorPublicationsList prepareResult(String author){
+
+        String[] nameSurname = author.split(" ");
+        String arg = Character.toLowerCase(nameSurname[1].charAt(0)) + "/" + nameSurname[1]+":"+nameSurname[0];
+        AuthorPublicationsList result = new AuthorPublicationsList();
+        result.setScientist(author);
+        Map<String,List<String>> authorsPublications = new HashMap<String, List<String>>();
+
+        try {
+            for (String publication : authorPublicationsParser.parse(new URL(personServiceUrl + arg))){
+                Publication p = publicationParser.parse(new URL(publicationServiceUrl+publication+".xml"));
+                for (String collaborator : p.getAuthors()){
+                    if (!authorsPublications.containsKey(collaborator) && !collaborator.equals(author)){
+                        List<String> publications = new ArrayList<String>();
+                        publications.add(p.getTitle() + " " + p.getYear());
+                        authorsPublications.put(collaborator,publications);
+                    }
+                    else if (!collaborator.equals(author)){
+                        authorsPublications.get(collaborator).add(pubToString(p));
+                    }
+                }
+            }
+            for (Map.Entry<String,List<String>> entry : authorsPublications.entrySet()){
+                result.addAuthorPublicationEntry(new AuthorPublicationsEntry(entry.getKey(),entry.getValue()));
+            }
+            return result;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
         return null;
     }
 
+    private String pubToString(Publication p){
+        return p.getTitle() + " - " + p.getYear();
+    }
 }
