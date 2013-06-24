@@ -15,10 +15,36 @@ import java.util.List;
  */
 public class AuthorPublicationsList {
 
+    private boolean success = true;
+    private String errorMsg = null;
+
+    @JsonProperty(value = "success")
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    @JsonProperty(value = "errorMsg")
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
     private String scientist;
     private List<AuthorPublicationsEntry> authorPublicationsList = new LinkedList<AuthorPublicationsEntry>();
 
     public AuthorPublicationsList() {
+    }
+
+    public AuthorPublicationsList(String errorMsg) {
+        this.errorMsg = errorMsg;
+        this.success = false;
     }
 
     @JsonProperty(value = "scientist")

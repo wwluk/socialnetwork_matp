@@ -49,12 +49,14 @@ public class HomeController {
 
         String[] nameSurname = author.split(" ");
         String arg = Character.toLowerCase(nameSurname[1].charAt(0)) + "/" + nameSurname[1]+":"+nameSurname[0];
-        AuthorPublicationsList result = new AuthorPublicationsList();
-        result.setScientist(author);
         Map<String,List<String>> authorsPublications = new HashMap<String, List<String>>();
+        AuthorPublicationsList result = null;
 
         try {
             for (String publication : authorPublicationsParser.parse(new URL(personServiceUrl + arg))){
+                result = new AuthorPublicationsList();
+                result.setScientist(author);
+
                 Publication p = publicationParser.parse(new URL(publicationServiceUrl+publication+".xml"));
                 for (String collaborator : p.getAuthors()){
                     if (!authorsPublications.containsKey(collaborator) && !collaborator.equals(author)){
@@ -71,11 +73,10 @@ public class HomeController {
                 result.addAuthorPublicationEntry(new AuthorPublicationsEntry(entry.getKey(),entry.getValue()));
             }
             return result;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
+            return new AuthorPublicationsList(e.toString());
         }
 
-        return null;
     }
 
     private String pubToString(Publication p){

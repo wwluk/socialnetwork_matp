@@ -18,12 +18,13 @@
     <spring:url value="/resources/scripts/custom.js" var="custom_url" />
     <spring:url value="/resources/styles/bootstrap/jquery-ui.css" var="jquery_css_url" />
     <spring:url value="/resources/scripts/graph/sigma.js" var="sigma_url" />
-
+    <spring:url value="/resources/styles/bootstrap/custom.css" var="custom_css_url" />
     <spring:url value="/home/search" var="searchUrl" />
 
     <head>
         <link rel="stylesheet" media="screen" href="${bootstrap_url}" />
         <link rel="stylesheet" media="screen" href="${jquery_css_url}" />
+        <link rel="stylesheet" media="screen" href="${custom_css_url}" />
 
         <script type="text/javascript" src="${jquery_url} " ><jsp:text/></script>
         <!--<script type="text/javascript" src="${bootstrap_js_url}" ><jsp:text/></script>-->
@@ -33,7 +34,7 @@
         <script type="text/javascript" src="${dracula_graffle_url}" ><jsp:text/></script>
         <script type="text/javascript" src="${dracula_algo_url}" ><jsp:text/></script>
         <script type="text/javascript" src="${jquery_validate_url}" ><jsp:text/></script>
-        <script type="text/javascript" src="${sigma_url}"><jsp:text/></script>
+        <!--<script type="text/javascript" src="${sigma_url}"><jsp:text/></script>-->
 
         <script type="text/javascript">
             $(function(){
@@ -42,7 +43,16 @@
                     var searchUrl = '${searchUrl}?search_val='+$('#search_val').val();
                     $.getJSON(searchUrl,function(data){
                         console.log(data);
-                        drawGraph(data);
+                        $('#graph-canvas').children().remove();
+                        if (data.collaborators.length == 0){
+                            $('<div />',{text :
+                                    "Naukowiec taki albo nie istnieje, albo nie ma wspolpracownikow",
+                                    class : "well alert alert-info"}).appendTo($('#graph-canvas'));
+                        }
+                        else{
+                            drawGraph(data);
+                        }
+
                     });
                     return false;
                 });
@@ -57,6 +67,14 @@
                 });
 
                 drawTest();
+
+                $(document).ajaxStart(function() {
+                    console.log("Ajax start")
+                    $('body').addClass("loading");
+                }).ajaxStop(function() {
+                            console.log("Ajax stop")
+                            $('body').removeClass("loading");
+                        });
             });
 
             function drawGraph(data){
@@ -77,15 +95,6 @@
             }
 
             function drawTest(){
-                var sigRoot = document.getElementById('test-canvas');
-                var sigInst = sigma.init(sigRoot);
-                sigInst.addNode('hello',{
-                    label: 'Hello',
-                    color: '#ff0000'
-                }).addNode('world',{
-                            label: 'World !',
-                            color: '#00ff00'
-                        }).addEdge('hello_world','hello','world').draw();
 
             }
         </script>
@@ -93,6 +102,7 @@
     </head>
 
     <body>
+
         <div class="container">
             <div class="row">
                 <div class="hero-unit">
@@ -123,6 +133,8 @@
 
                 </div>
             </div>
+            <div class="modal-ajax" ><jsp:text/></div>
         </div>
     </body>
+
 </html>
