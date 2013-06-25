@@ -50,6 +50,7 @@
                     if (data.collaborators.length == 0) {
                         $('#graph-canvas').html('<div class="well alert alert-info">' +
                                 '<p class="text-center">Naukowiec taki albo nie istnieje, albo nie ma wspolpracownikow</p></div>');
+                        $('#container').html('');
                     }
                     else {
                         drawGraph(data);
@@ -81,18 +82,25 @@
             var layouter = new Graph.Layout.Spring(g);
             layouter.layout();
 
-            var renderer = new Graph.Renderer.Raphael('graph-canvas', g, 800, 600);
+            var renderer = new Graph.Renderer.Raphael('graph-canvas', g, 1100, 1600);
             renderer.draw();
         }
 
+
+        var tooltips = [];
+        collaborators = [];
         function drawChart(data) {
-            collaborators = [];
             chartData = [];
             $.each(data.collaborators, function (id, collaboratorData) {
                 collaborators.push(collaboratorData.collaborator);
+                tooltips[id] = [];
 
                 $.each(collaboratorData.publications, function (publicationIndx, publicationData) {
                     chartData.push({x: publicationData.year, y: id, z: publicationData.title});
+                    if(typeof tooltips[id][publicationData.year] == 'undefined'){
+                        tooltips[id][publicationData.year] = [];
+                    }
+                    tooltips[id][publicationData.year].push(publicationData.title);
                 });
 
             });
@@ -139,7 +147,15 @@
                          output += property + ': ' + this[property]+'; ';
                          };
                          return output;*/
-                        return this.x + ' rok ' + this.point.z;
+                        //return this.x + ' rok ' + this.point.z;
+                        var publications = tooltips[this.y][this.x];
+                        var description = this.x + ' - ' + collaborators[this.y] + ':<br />';
+                        $.each(publications, function(indx, title){
+                           description += title + '<br />';
+                        });
+
+                        return description;
+
                     }
                 },
                 plotOptions: {
