@@ -47,12 +47,12 @@ public class HomeController {
 
     private AuthorPublicationsList prepareResult(String author){
 
-        String[] nameSurname = author.split(" ");
-        String arg = Character.toLowerCase(nameSurname[1].charAt(0)) + "/" + nameSurname[1]+":"+nameSurname[0];
-        Map<String,List<Publication>> authorsPublications = new HashMap<String, List<Publication>>();
-        AuthorPublicationsList result = null;
-
         try {
+            String[] nameSurname = author.split(" ");
+            String arg = Character.toLowerCase(nameSurname[1].charAt(0)) + "/" + nameSurname[1]+":"+nameSurname[0];
+            Map<String,List<Publication>> authorsPublications = new HashMap<String, List<Publication>>();
+            AuthorPublicationsList result = null;
+
             for (String publication : authorPublicationsParser.parse(new URL(personServiceUrl + arg))){
                 result = new AuthorPublicationsList();
                 result.setScientist(author);
