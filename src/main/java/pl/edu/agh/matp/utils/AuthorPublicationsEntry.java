@@ -1,6 +1,7 @@
 package pl.edu.agh.matp.utils;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import pl.edu.agh.matp.socialNetwork.Publication;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -17,12 +18,12 @@ import java.util.Set;
 public class AuthorPublicationsEntry {
 
     private String author;
-    private List<String> publications = new LinkedList<String>();
+    private List<Publication> publications = new LinkedList<Publication>();
 
     public AuthorPublicationsEntry() {
     }
 
-    public AuthorPublicationsEntry(String author, List<String> publications) {
+    public AuthorPublicationsEntry(String author, List<Publication> publications) {
         this.author = author;
         this.publications = publications;
     }
@@ -37,15 +38,15 @@ public class AuthorPublicationsEntry {
     }
 
     @JsonProperty(value = "publications")
-    public List<String> getPublications() {
+    public List<Publication> getPublications() {
         return publications;
     }
 
-    public void setPublications(List<String> publications) {
+    public void setPublications(List<Publication> publications) {
         this.publications = publications;
     }
 
-    public void addPublicationAsString(String publication){
+    public void addPublicationAsString(Publication publication){
         publications.add(publication);
     }
 }

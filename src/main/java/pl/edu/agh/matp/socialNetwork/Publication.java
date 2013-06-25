@@ -1,5 +1,8 @@
 package pl.edu.agh.matp.socialNetwork;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +16,7 @@ public class Publication {
     private List<String> authors = new ArrayList<String>();
     private String title;
 
+    @JsonProperty(value = "year")
     public int getYear() {
         return year;
     }
@@ -21,6 +25,7 @@ public class Publication {
         this.year = year;
     }
 
+    @JsonIgnore
     public List<String> getAuthors() {
         return authors;
     }
@@ -29,6 +34,7 @@ public class Publication {
         this.authors = authors;
     }
 
+    @JsonProperty(value = "title")
     public String getTitle() {
         return title;
     }
@@ -37,6 +43,7 @@ public class Publication {
         this.title = title;
     }
 
+    @JsonIgnore
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder("Publication \"");

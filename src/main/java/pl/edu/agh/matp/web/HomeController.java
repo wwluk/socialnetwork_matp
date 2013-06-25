@@ -49,7 +49,7 @@ public class HomeController {
 
         String[] nameSurname = author.split(" ");
         String arg = Character.toLowerCase(nameSurname[1].charAt(0)) + "/" + nameSurname[1]+":"+nameSurname[0];
-        Map<String,List<String>> authorsPublications = new HashMap<String, List<String>>();
+        Map<String,List<Publication>> authorsPublications = new HashMap<String, List<Publication>>();
         AuthorPublicationsList result = null;
 
         try {
@@ -60,16 +60,16 @@ public class HomeController {
                 Publication p = publicationParser.parse(new URL(publicationServiceUrl+publication+".xml"));
                 for (String collaborator : p.getAuthors()){
                     if (!authorsPublications.containsKey(collaborator) && !collaborator.equals(author)){
-                        List<String> publications = new ArrayList<String>();
-                        publications.add(p.getTitle() + " " + p.getYear());
+                        List<Publication> publications = new ArrayList<Publication>();
+                        publications.add(p);
                         authorsPublications.put(collaborator,publications);
                     }
                     else if (!collaborator.equals(author)){
-                        authorsPublications.get(collaborator).add(pubToString(p));
+                        authorsPublications.get(collaborator).add(p);
                     }
                 }
             }
-            for (Map.Entry<String,List<String>> entry : authorsPublications.entrySet()){
+            for (Map.Entry<String,List<Publication>> entry : authorsPublications.entrySet()){
                 result.addAuthorPublicationEntry(new AuthorPublicationsEntry(entry.getKey(),entry.getValue()));
             }
             return result;

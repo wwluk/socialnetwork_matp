@@ -1,107 +1,111 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:jsp="http://java.sun.com/JSP/Page"
-      xmlns:spring="http://www.springframework.org/tags">
 
-    <jsp:output doctype-root-element="HTML" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
-                doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+
+    <jsp:output doctype-root-element="HTML" omit-xml-declaration="true"
+                doctype-system="about:legacy-compat"/>
     <jsp:directive.page pageEncoding="UTF-8" />
 
-    <spring:url value="/resources/scripts/jquery.min.js" var="jquery_url" />
-    <spring:url value="/resources/scripts/jquery-ui.min.js" var="jquery_ui_url" />
-    <spring:url value="/resources/scripts/graph/raphael-min.js" var="raphael_url" />
-    <spring:url value="/resources/scripts/graph/dracula_graph.js" var="dracula_graph_url" />
-    <spring:url value="/resources/scripts/graph/dracula_graffle.js" var="dracula_graffle_url" />
-    <spring:url value="/resources/scripts/graph/dracula_algorithms.js" var="dracula_algo_url" />
-    <spring:url value="/resources/styles/bootstrap/css/bootstrap.min.css" var="bootstrap_url" />
-    <spring:url value="/resources/scripts/bootstrap.min.js" var="bootstrap_js_url" />
-    <spring:url value="/resources/scripts/jquery.validate.min.js" var="jquery_validate_url" />
-    <spring:url value="/resources/scripts/custom.js" var="custom_url" />
-    <spring:url value="/resources/styles/bootstrap/jquery-ui.css" var="jquery_css_url" />
-    <spring:url value="/resources/scripts/graph/sigma.js" var="sigma_url" />
-    <spring:url value="/resources/styles/bootstrap/custom.css" var="custom_css_url" />
-    <spring:url value="/home/search" var="searchUrl" />
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:spring="http://www.springframework.org/tags">
 
-    <head>
-        <link rel="stylesheet" media="screen" href="${bootstrap_url}" />
-        <link rel="stylesheet" media="screen" href="${jquery_css_url}" />
-        <link rel="stylesheet" media="screen" href="${custom_css_url}" />
 
-        <script type="text/javascript" src="${jquery_url} " ><jsp:text/></script>
-        <!--<script type="text/javascript" src="${bootstrap_js_url}" ><jsp:text/></script>-->
-        <!--<script type="text/javascript" src="${jquery_ui_url}" ><jsp:text/></script>-->
-        <script type="text/javascript" src="${raphael_url}" ><jsp:text/></script>
-        <script type="text/javascript" src="${dracula_graph_url}" ><jsp:text/></script>
-        <script type="text/javascript" src="${dracula_graffle_url}" ><jsp:text/></script>
-        <script type="text/javascript" src="${dracula_algo_url}" ><jsp:text/></script>
-        <script type="text/javascript" src="${jquery_validate_url}" ><jsp:text/></script>
-        <!--<script type="text/javascript" src="${sigma_url}"><jsp:text/></script>-->
+        <spring:url value="/resources/scripts/jquery.min.js" var="jquery_url" />
+        <spring:url value="/resources/scripts/jquery-ui.min.js" var="jquery_ui_url" />
+        <spring:url value="/resources/scripts/graph/raphael-min.js" var="raphael_url" />
+        <spring:url value="/resources/scripts/graph/dracula_graph.js" var="dracula_graph_url" />
+        <spring:url value="/resources/scripts/graph/dracula_graffle.js" var="dracula_graffle_url" />
+        <spring:url value="/resources/scripts/graph/dracula_algorithms.js" var="dracula_algo_url" />
+        <spring:url value="/resources/styles/bootstrap/css/bootstrap.min.css" var="bootstrap_url" />
+        <spring:url value="/resources/scripts/bootstrap.min.js" var="bootstrap_js_url" />
+        <spring:url value="/resources/scripts/jquery.validate.min.js" var="jquery_validate_url" />
+        <spring:url value="/resources/scripts/custom.js" var="custom_url" />
+        <spring:url value="/resources/styles/bootstrap/jquery-ui.css" var="jquery_css_url" />
+        <spring:url value="/resources/scripts/graph/sigma.js" var="sigma_url" />
+        <spring:url value="/resources/styles/bootstrap/custom.css" var="custom_css_url" />
+        <spring:url value="/home/search" var="searchUrl" />
 
-        <script type="text/javascript">
-            $(function(){
+        <head>
+            <link rel="stylesheet" media="screen" href="${bootstrap_url}" />
+            <link rel="stylesheet" media="screen" href="${jquery_css_url}" />
+            <link rel="stylesheet" media="screen" href="${custom_css_url}" />
 
-                $('form#search-form').submit(function(){
-                    var searchUrl = '${searchUrl}?search_val='+$('#search_val').val();
-                    $.getJSON(searchUrl,function(data){
-                        console.log(data);
-                        $('#graph-canvas').children().remove();
-                        if (data.collaborators.length == 0){
-                            $('<div />',{text :
-                                    "Naukowiec taki albo nie istnieje, albo nie ma wspolpracownikow",
+            <script type="text/javascript" src="${jquery_url} " ><jsp:text/></script>
+            <!--<script type="text/javascript" src="${bootstrap_js_url}" ><jsp:text/></script>-->
+            <!--<script type="text/javascript" src="${jquery_ui_url}" ><jsp:text/></script>-->
+            <script type="text/javascript" src="${raphael_url}" ><jsp:text/></script>
+            <script type="text/javascript" src="${dracula_graph_url}" ><jsp:text/></script>
+            <script type="text/javascript" src="${dracula_graffle_url}" ><jsp:text/></script>
+            <script type="text/javascript" src="${dracula_algo_url}" ><jsp:text/></script>
+            <script type="text/javascript" src="${jquery_validate_url}" ><jsp:text/></script>
+            <!--<script type="text/javascript" src="${sigma_url}"><jsp:text/></script>-->
+
+            <script type="text/javascript">
+                $(function(){
+
+                    $('form#search-form').submit(function(){
+                        var searchUrl = '${searchUrl}?search_val='+$('#search_val').val();
+                        $.getJSON(searchUrl,function(data){
+                            console.log(data);
+                            $('#graph-canvas').children().remove();
+                            if (data.collaborators.length == 0){
+                                alert('AAA');
+                                $('<div />',{text :
+                                        "Naukowiec taki albo nie istnieje, albo nie ma wspolpracownikow",
                                     class : "well alert alert-info"}).appendTo($('#graph-canvas'));
-                        }
-                        else{
-                            drawGraph(data);
-                        }
+                            }
+                            else{
+                                drawGraph(data);
+                            }
 
-                    });
-                    return false;
-                });
-
-                $('form#search-form').validate({
-                    rules : {
-                        search_val : {
-                            required : true
-                        }
-                    }
-
-                });
-
-                drawTest();
-
-                $(document).ajaxStart(function() {
-                    console.log("Ajax start")
-                    $('body').addClass("loading");
-                }).ajaxStop(function() {
-                            console.log("Ajax stop")
-                            $('body').removeClass("loading");
                         });
-            });
-
-            function drawGraph(data){
-                var g = new Graph();
-                g.addNode(data.scientist);
-                $.each(data.collaborators,function(indx,col){
-                    g.addNode(col.collaborator);
-                    $.each(col.publications,function(indx,pub){
-                        g.addEdge(col.collaborator,data.scientist);
+                        return false;
                     });
+
+                    $('form#search-form').validate({
+                        rules : {
+                            search_val : {
+                                required : true
+                            }
+                        }
+
+                    });
+
+                    drawTest();
+
+                    $(document).ajaxStart(function() {
+                        console.log("Ajax start")
+                        $('body').addClass("loading");
+                    }).ajaxStop(function() {
+                                console.log("Ajax stop")
+                                $('body').removeClass("loading");
+                            });
                 });
 
-                var layouter = new Graph.Layout.Spring(g);
-                layouter.layout();
+                function drawGraph(data){
+                    var g = new Graph();
+                    g.addNode(data.scientist);
+                    $.each(data.collaborators,function(indx,col){
+                        g.addNode(col.collaborator);
+                        $.each(col.publications,function(indx,pub){
+                            g.addEdge(col.collaborator,data.scientist);
+                        });
+                    });
 
-                var renderer = new Graph.Renderer.Raphael('graph-canvas', g, 800, 600);
-                renderer.draw();
-            }
+                    var layouter = new Graph.Layout.Spring(g);
+                    layouter.layout();
 
-            function drawTest(){
+                    var renderer = new Graph.Renderer.Raphael('graph-canvas', g, 800, 600);
+                    renderer.draw();
+                }
 
-            }
-        </script>
+                function drawTest(){
 
-    </head>
+                }
+            </script>
 
-    <body>
+        </head>
+
+        <body>
 
         <div class="container">
             <div class="row">
@@ -135,6 +139,8 @@
             </div>
             <div class="modal-ajax" ><jsp:text/></div>
         </div>
-    </body>
+        </body>
 
-</html>
+    </html>
+
+</jsp:root>
